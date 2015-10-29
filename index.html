@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>LFL</title>
+ <link rel="stylesheet" href="lfl.css">
+ <script src="lfl.js"></script>
+</head>
+<body>
+<button id="sendBase">origin</button>
+<div id="display1"></div>
+<div id="display2"></div>
+<script>
+	function initMap() {
+		var theOrigin = {lat: 33.9882332, lng: -118.4590861};//510 Victoria, Venice, CA
+		var	dest = [];
+		dest[0] = {lat: 40.759011, lng: -73.9844722}; //Times Square, Manhattan, NY 10036
+		dest[1] = {lat: 43.8764805, lng: -103.4548375}; //13000 S Dakota 244, Keystone, SD 57751
+		dest[2] = {lat: 38.89767579999999, lng: -77.0364823};//1600 Pennsylvania Ave NW, Washington, DC 20500
+		dest[3] = {lat: 37.8083451, lng: -122.4766159};//Golden Gate Bridge, San Francisco, CA 94129
+		dest[4] = {lat: 51.17888199999999, lng: -1.826215};//Stonehenge, A344, Amesbury, Wiltshire SP4 7DE, United Kingdom
+		dest[5]	= {lat: 37.48576, lng: 103.456128};//Great Wall of China
+		dest[6] = {lat: 34.1341151, lng: -118.3215482};//Hollywood Sign, Los Angeles, CA
+		
+		var service = new google.maps.DistanceMatrixService;  	
+
+		for(var i = 0; i < dest.length; i++) {
+			theDest = dest[i];
+			console.log(theDest);
+		  	service.getDistanceMatrix({
+			    origins: [theOrigin],
+			    destinations: [theDest],
+			    travelMode: google.maps.TravelMode.DRIVING,
+			    unitSystem: google.maps.UnitSystem.METRIC,
+			    avoidHighways: false,
+			    avoidTolls: false
+		  	}, function(response, status) { 
+		  		if(status === 'OK' && response.rows[0].elements[0].distance) {
+    				var display2 = document.querySelector('#display2')
+		  			console.log('value ', response.rows[0].elements[0].distance.value);
+		  			display2.innerHTML += response.rows[0].elements[0].distance.value + '<br>';
+		  		}
+			});
+		}
+	}
+</script>
+<script async defer
+       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDotV4_SlT3QNCKZlPEQijc8F1W-k5dVLs&callback=initMap">
+</script>
+</body>
+</html>
